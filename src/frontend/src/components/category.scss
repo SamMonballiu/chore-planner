@@ -1,0 +1,25 @@
+.category {
+    .header {
+        display: flex;
+        align-items: center;
+
+        .collapse-icon {
+            font-size: 2.2em;
+            opacity: .25;
+            cursor: pointer;
+            transition: transform .2s;
+        }
+
+        .rotated {
+            transform: rotate(90deg);
+            transition: transform .2s;
+        }
+
+        h5 {
+            cursor: pointer;
+        }
+        font-family: 'Roboto';
+    }
+
+    margin-bottom: 1em;
+}
