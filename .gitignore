@@ -1,0 +1,9 @@
+# IDE
+.idea/
+
+# DEPENDENCIES
+node_modules/
+
+# OUTPUT
+build/
+*.tsbuildinfo

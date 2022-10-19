@@ -1,0 +1,43 @@
+{
+  "name": "node-typescript-template",
+  "description": "Template project for Node.js projects written in TypeScript.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "BVR Code",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenjaVR/node-typescript-template"
+  },
+  "main": "build/index.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node build/index.js",
+    "prestart": "npm run build",
+    "build": "tsc",
+    "prebuild": "rimraf build",
+    "lint": "eslint src/**/*.ts",
+    "test": "jest",
+    "prepare": "husky install"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "27.0.0",
+    "@typescript-eslint/eslint-plugin": "4.29.1",
+    "@typescript-eslint/parser": "4.29.1",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "husky": "7.0.1",
+    "jest": "27.0.6",
+    "lint-staged": "11.1.2",
+    "nodemon": "2.0.12",
+    "prettier": "2.3.2",
+    "rimraf": "3.0.2",
+    "ts-jest": "27.0.4",
+    "ts-node": "10.2.0",
+    "typescript": "4.3.5"
+  }
+}
