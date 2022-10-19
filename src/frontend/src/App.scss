@@ -1,3 +1,10 @@
+body {
+  height: 100%;
+  padding: 0 5em;
+  background: linear-gradient(to bottom, #c6d3ec, #cdd3dd);
+}
+
 #root {
   font-family: "Roboto", sans-serif;
+  height: 100%;
 }

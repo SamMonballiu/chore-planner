@@ -1,21 +1,59 @@
-import { Chore } from "@common/models";
-import Button from "@mui/material/Button";
+import { Category, Chore } from "@common/models";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import "./App.scss";
+import CategoryComponent from "./components/Category";
 
-const url = "http://raspberrypi:1904/api/chores/";
+const baseUrl = import.meta.env.VITE_URL as string;
+
+const url = {
+  chores: `${baseUrl}/api/chores`,
+  categories: `${baseUrl}/api/categories`,
+};
 
 const App: FC = () => {
-  const { data: chores } = useQuery(["getChores"], async () => {
-    return await axios.get<Chore[]>(url);
-  });
+  const [collapsedCategories, setCollapsedCategories] = useState<string[]>([]);
+
+  const toggleCollapsed = (id: string) => {
+    if (collapsedCategories?.includes(id)) {
+      setCollapsedCategories(collapsedCategories.filter((c) => c !== id));
+    } else {
+      setCollapsedCategories([...collapsedCategories, id]);
+    }
+  };
+
+  const { data: categories, isFetching: isFetchingCategories } = useQuery(
+    ["getCategories"],
+    async () => {
+      return (await axios.get<Category[]>(url.categories)).data;
+    }
+  );
+  const { data: chores, isFetching: isFetchingChores } = useQuery(
+    ["getChores"],
+    async () => {
+      return (await axios.get<Chore[]>(url.chores)).data;
+    },
+    {
+      enabled: !!categories,
+    }
+  );
+
+  if (isFetchingCategories || isFetchingChores) {
+    return null;
+  }
 
   return (
     <div className="App">
-      <h1>Hello world</h1>
-      <Button variant="contained">Test</Button>
+      {categories?.map((c) => (
+        <CategoryComponent
+          key={c.id}
+          category={c}
+          isCollapsed={collapsedCategories?.includes(c.id)}
+          onToggleCollapsed={toggleCollapsed}
+          chores={chores.filter((ch) => ch.categoryId === c.id)}
+        />
+      ))}
     </div>
   );
 };
