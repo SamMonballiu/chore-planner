@@ -1,11 +1,5 @@
-import { Chore } from "@/common/models";
-import { Entity } from "@/common/models/entity";
+import { Category, Chore } from "@/common/models";
 import { Repository, RepositoryContext } from "json-repo";
-import { v4 as uuidv4 } from "uuid";
-
-export const setId = (entity: Entity): void => {
-  entity.id = uuidv4();
-};
 
 export class DataContext extends RepositoryContext {
   constructor(dataPath: string) {
@@ -14,6 +8,7 @@ export class DataContext extends RepositoryContext {
 
   models = {
     chores: new ChoreRepository(),
+    categories: new CategoryRepository(),
   };
 }
 
@@ -23,6 +18,16 @@ class ChoreRepository extends Repository<Chore> {
   }
 
   public getAll(): Chore[] {
-    return this.filter((_) => true);
+    return this.filter(() => true);
+  }
+}
+
+class CategoryRepository extends Repository<Category> {
+  constructor() {
+    super();
+  }
+
+  public getAll(): Category[] {
+    return this.filter(() => true);
   }
 }

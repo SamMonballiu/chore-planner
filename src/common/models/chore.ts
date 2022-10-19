@@ -1,4 +1,4 @@
-import { Entity } from "@common/modelds/entity";
+import { Entity } from "./entity";
 
 export interface Chore extends Entity {
   name: string;
