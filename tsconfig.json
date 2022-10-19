@@ -12,8 +12,10 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "@common*" : ["common/*"]
     },
+    "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
