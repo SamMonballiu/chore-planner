@@ -1,0 +1,11 @@
+.modifyChore {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .buttonRow {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+}
