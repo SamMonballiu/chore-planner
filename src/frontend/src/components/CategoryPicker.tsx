@@ -16,7 +16,7 @@ const CategoryPicker: FC<Props> = ({ onSelect, defaultValue }) => {
   const { t } = useTranslation();
 
   const { data: categories, isFetching: isFetchingCategories } = useQuery(
-    ["getCategories"],
+    ["categoryPicker"],
     async () => {
       return (await axios.get<Category[]>(`${baseUrl}/api/categories`)).data;
     }
@@ -34,7 +34,7 @@ const CategoryPicker: FC<Props> = ({ onSelect, defaultValue }) => {
       onChange={(e) => onSelect(e.target.value)}
     >
       {categories?.map((c) => (
-        <MenuItem value={c.id}>{c.name}</MenuItem>
+        <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>
       ))}
     </Select>
   );
