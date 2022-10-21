@@ -12,6 +12,7 @@ interface Props {
   chores: Chore[];
   isCollapsed?: boolean;
   onToggleCollapsed: (id: string) => void;
+  onSelectChore: (id: string) => void;
 }
 
 const CategoryComponent: FC<Props> = ({
@@ -19,6 +20,7 @@ const CategoryComponent: FC<Props> = ({
   chores,
   isCollapsed,
   onToggleCollapsed,
+  onSelectChore,
 }) => {
   return (
     <div className="category">
@@ -33,9 +35,11 @@ const CategoryComponent: FC<Props> = ({
       </div>
 
       <Collapse in={!isCollapsed}>
-        {chores.map((c) => (
-          <ChoreComponent key={c.id} chore={c} />
-        ))}
+        <div className="chores">
+          {chores.map((c) => (
+            <ChoreComponent key={c.id} chore={c} onSelect={onSelectChore} />
+          ))}
+        </div>
       </Collapse>
     </div>
   );
