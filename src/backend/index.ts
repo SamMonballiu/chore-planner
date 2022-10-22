@@ -69,6 +69,13 @@ app.put("/api/chores/:id", async (req, res) => {
   return res.status(200).send("OK");
 });
 
+app.post("/api/chores/:id/activate", (req, res) => {
+  const id = req.params["id"];
+
+  const chore = context.models.chores.find(id);
+  chore.lastActiveDate = new Date();
+});
+
 app.get("/api/categories", (_, res) => {
   res.send(context.models.categories.getAll());
 });
