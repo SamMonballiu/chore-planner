@@ -112,7 +112,7 @@ const App: FC = () => {
   );
 
   const restartChore = useMutation<string>(
-    (id: string) => axios.post(`${url.chores}/restart`),
+    (id: string) => axios.post(`${url.chores}/${id}/restart`),
     { onSuccess: refetchChores }
   );
 
