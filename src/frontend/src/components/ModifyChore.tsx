@@ -1,7 +1,5 @@
 import { useTranslation } from "@/hooks/useTranslation";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -13,7 +11,7 @@ import { ChorePostmodel } from "@shared/postmodels/chore";
 
 interface Props {
   chore?: Chore;
-  onSave: (data: ChorePostmodel) => void;
+  onSave?: (data: ChorePostmodel) => void;
   onCancel: () => void;
 }
 
@@ -43,7 +41,7 @@ const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
       owner: "",
     };
 
-    onSave(postmodel);
+    onSave?.(postmodel);
   };
 
   return (
