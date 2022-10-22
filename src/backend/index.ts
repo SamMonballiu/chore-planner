@@ -53,6 +53,22 @@ app.post("/api/chores", (req, res) => {
   res.send(chore.id);
 });
 
+app.put("/api/chores/:id", async (req, res) => {
+  const id = req.params["id"];
+  const { name, owner, categoryId, repeatInterval } =
+    req.body as ChorePostmodel;
+  const updated: Chore = {
+    id,
+    name,
+    owner,
+    categoryId,
+    repeatInterval,
+  };
+  context.models.chores.upsert(id, updated);
+  await context.saveChanges();
+  return res.status(200).send("OK");
+});
+
 app.get("/api/categories", (_, res) => {
   res.send(context.models.categories.getAll());
 });
