@@ -91,6 +91,13 @@ app.post("/api/chores/:id/restart", async (req, res) => {
   res.status(200).send("OK");
 });
 
+app.delete("/api/chores/:id/delete", async (req, res) => {
+  const id = req.params["id"];
+  context.models.chores.delete(id);
+  await context.saveChanges();
+  res.status(200).send("OK");
+});
+
 app.post("/api/chores/restart", async (req, res) => {
   const { ids } = req.body as RestartChoresPostmodel;
   const chores = ids.map((id) => context.models.chores.find(id));
