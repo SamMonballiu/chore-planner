@@ -5,4 +5,5 @@ export interface Chore extends Entity {
   owner: string;
   categoryId: string;
   repeatInterval?: number;
+  lastActiveDate?: Date;
 }
