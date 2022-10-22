@@ -57,12 +57,14 @@ app.put("/api/chores/:id", async (req, res) => {
   const id = req.params["id"];
   const { name, owner, categoryId, repeatInterval } =
     req.body as ChorePostmodel;
+  const { lastActiveDate } = context.models.chores.find(id);
   const updated: Chore = {
     id,
     name,
     owner,
     categoryId,
     repeatInterval,
+    lastActiveDate,
   };
   context.models.chores.upsert(id, updated);
   await context.saveChanges();
