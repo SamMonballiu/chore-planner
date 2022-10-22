@@ -3,7 +3,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import React, { FC, useMemo } from "react";
-import { Chore } from "../../../common/models";
+import { Chore, getIntervalProgressPercentage } from "../../../common/models";
 import "./chore.scss";
 import ForwardIcon from "@mui/icons-material/Forward";
 import cx from "classnames";
@@ -24,26 +24,10 @@ const ChoreComponent: FC<Props> = ({
 }) => {
   const isActive = chore.lastActiveDate !== undefined;
 
-  const intervalProgress = useMemo((): number | undefined => {
-    if (chore.lastActiveDate === undefined) {
-      return undefined;
-    }
-
-    if (chore.repeatInterval === undefined) {
-      return 0;
-    }
-
-    const bleh = new Date(chore.lastActiveDate);
-    const choreStart = bleh.getTime();
-    bleh.setDate(bleh.getDate() + chore.repeatInterval);
-    const choreEnd = bleh.getTime();
-
-    const today = new Date().getTime();
-    const currentPointInInterval = today - choreStart;
-    const totalInterval = choreEnd - choreStart;
-
-    return (currentPointInInterval / totalInterval) * 100;
-  }, []);
+  const intervalProgress = useMemo(
+    (): number | undefined => getIntervalProgressPercentage(chore),
+    []
+  );
 
   return (
     <Card className="chore-card">
@@ -59,11 +43,13 @@ const ChoreComponent: FC<Props> = ({
               className="mirror icon"
               onClick={() => onRestart?.(chore.id)}
             />
-            <LinearProgress
-              variant="determinate"
-              className="prg"
-              value={Math.min(intervalProgress!, 100)}
-            />
+            {intervalProgress ? (
+              <LinearProgress
+                variant="determinate"
+                className="prg"
+                value={intervalProgress}
+              />
+            ) : null}
           </>
         ) : (
           <ForwardIcon

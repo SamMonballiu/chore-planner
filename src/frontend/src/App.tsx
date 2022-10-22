@@ -1,5 +1,6 @@
 import Fab from "@mui/material/Fab";
 import { Category, Chore } from "@shared/models";
+import { getIntervalProgressPercentage } from "../../common/models";
 import { ChorePostmodel } from "@shared/postmodels/chore";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -10,6 +11,9 @@ import Modal from "./components/Modal";
 import ModifyChore from "./components/ModifyChore";
 import { useSelection } from "./hooks/useSelection";
 import AddIcon from "@mui/icons-material/Add";
+import ConfirmModal from "./components/ConfirmModal";
+import { useTranslation } from "./hooks/useTranslation";
+import { useToggle } from "./hooks/useToggle";
 
 const baseUrl = import.meta.env.VITE_URL as string;
 
@@ -20,8 +24,16 @@ const url = {
 
 const App: FC = () => {
   const [showChoreModal, setShowChoreModal] = useState<boolean>(false);
+  const [showConfirmRestartExpiredModal, toggleConfirmRestartExpiredModal] =
+    useToggle(false);
+  const [
+    showConfirmDeleteSelectedChoreModal,
+    toggleConfirmDeleteSelectedChoreModal,
+  ] = useToggle(false);
   const [selectedChore, selectChore, deselectChore] = useSelection<string>();
   const [collapsedCategories, setCollapsedCategories] = useState<string[]>([]);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setShowChoreModal(selectedChore !== undefined);
@@ -57,6 +69,21 @@ const App: FC = () => {
     }
   );
 
+  const expiredChores = useMemo(() => {
+    const progressPercentages = chores?.map((ch) => ({
+      id: ch.id,
+      progress: getIntervalProgressPercentage(ch),
+    }));
+
+    return progressPercentages?.filter((p) => p.progress === 100);
+  }, [chores]);
+
+  useEffect(() => {
+    if (expiredChores?.length > 0) {
+      toggleConfirmRestartExpiredModal();
+    }
+  }, [chores]);
+
   const getInitialCollapsed = (chores: Chore[]): string[] => {
     if (!categories) {
       return [];
@@ -85,7 +112,17 @@ const App: FC = () => {
   );
 
   const restartChore = useMutation<string>(
-    (id: string) => axios.post(`${url.chores}/${id}/restart`),
+    (id: string) => axios.post(`${url.chores}/restart`),
+    { onSuccess: refetchChores }
+  );
+
+  const restartChores = useMutation<string>(
+    (ids: string[]) => axios.post(`${url.chores}/restart`, { ids }),
+    { onSuccess: refetchChores }
+  );
+
+  const deleteChore = useMutation<string>(
+    (id: string) => axios.delete(`${url.chores}/${id}/delete`),
     { onSuccess: refetchChores }
   );
 
@@ -100,8 +137,12 @@ const App: FC = () => {
   };
 
   const handleActivateChore = (id: string) => activateChore.mutate(id);
-
   const handleRestartChore = (id: string) => restartChore.mutate(id);
+  const handleRestartChores = (ids: string[]) => restartChores.mutate(ids);
+  const handleDeleteChore = (id: string) => {
+    deleteChore.mutate(id);
+    deselectChore();
+  };
 
   const choreModal = (
     <Modal
@@ -117,12 +158,40 @@ const App: FC = () => {
               selectedChore ? deselectChore : () => setShowChoreModal(false)
             }
             onSave={handleSaveChore}
+            onDelete={
+              selectedChore ? toggleConfirmDeleteSelectedChoreModal : null
+            }
           />
         ),
         [chores, selectedChore]
       )}
     </Modal>
   );
+
+  const confirmRestartExpiredModal = (
+    <ConfirmModal
+      show={showConfirmRestartExpiredModal}
+      width="md"
+      message={t.askRestartExpiredChores}
+      onCancel={toggleConfirmRestartExpiredModal}
+      onConfirm={() => {
+        if (expiredChores !== undefined && expiredChores.length > 0) {
+          handleRestartChores(expiredChores.map((c) => c.id));
+          toggleConfirmRestartExpiredModal();
+        }
+      }}
+    />
+  );
+
+  const confirmDeleteSelectedChoreModal = selectedChore ? (
+    <ConfirmModal
+      show={showConfirmDeleteSelectedChoreModal}
+      width="md"
+      message={t.askDelete(chores?.find((c) => c.id === selectedChore).name)}
+      onCancel={toggleConfirmDeleteSelectedChoreModal}
+      onConfirm={() => handleDeleteChore(selectedChore)}
+    />
+  ) : null;
 
   const addButton = (
     <Fab
@@ -142,6 +211,8 @@ const App: FC = () => {
   return (
     <>
       {choreModal}
+      {confirmRestartExpiredModal}
+      {confirmDeleteSelectedChoreModal}
       <div className="App">
         {addButton}
         {categories?.map((c) => (

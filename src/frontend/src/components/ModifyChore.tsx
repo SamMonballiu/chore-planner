@@ -13,9 +13,10 @@ interface Props {
   chore?: Chore;
   onSave?: (data: ChorePostmodel) => void;
   onCancel: () => void;
+  onDelete?: () => void;
 }
 
-const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
+const ModifyChore: FC<Props> = ({ chore, onSave, onCancel, onDelete }) => {
   const { t } = useTranslation();
   const [name, setName] = useState<string>(chore?.name ?? "");
   const [category, setCategory] = useState<string | undefined>(
@@ -75,6 +76,11 @@ const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
         <Button variant="outlined" onClick={onCancel}>
           {t.cancel}
         </Button>
+        {onDelete ? (
+          <Button variant="contained" color="error" onClick={onDelete}>
+            {t.delete}
+          </Button>
+        ) : null}
         <Button variant="contained" onClick={handleSave}>
           {t.save}
         </Button>
