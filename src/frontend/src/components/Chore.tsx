@@ -13,9 +13,15 @@ interface Props {
   chore: Chore;
   onSelect: (id: string) => void;
   onActivate?: (id: string) => void;
+  onRestart?: (id: string) => void;
 }
 
-const ChoreComponent: FC<Props> = ({ chore, onSelect, onActivate }) => {
+const ChoreComponent: FC<Props> = ({
+  chore,
+  onSelect,
+  onActivate,
+  onRestart,
+}) => {
   const isActive = chore.lastActiveDate !== undefined;
 
   const intervalProgress = useMemo((): number | undefined => {
@@ -49,11 +55,14 @@ const ChoreComponent: FC<Props> = ({ chore, onSelect, onActivate }) => {
       >
         {isActive ? (
           <>
-            <ForwardIcon className="mirror icon" />
+            <ForwardIcon
+              className="mirror icon"
+              onClick={() => onRestart?.(chore.id)}
+            />
             <LinearProgress
               variant="determinate"
               className="prg"
-              value={intervalProgress}
+              value={Math.min(intervalProgress!, 100)}
             />
           </>
         ) : (

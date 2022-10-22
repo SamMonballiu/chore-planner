@@ -68,24 +68,24 @@ const App: FC = () => {
   };
 
   const createChore = useMutation(
-    (chore: ChorePostmodel) => {
-      return axios.post(url.chores, chore);
-    },
+    (chore: ChorePostmodel) => axios.post(url.chores, chore),
     {
       onSuccess: refetchChores,
     }
   );
   const updateChore = useMutation<string>(
-    (model: ChorePostmodel) => {
-      return axios.put(`${url.chores}/${selectedChore}`, model);
-    },
+    (model: ChorePostmodel) =>
+      axios.put(`${url.chores}/${selectedChore}`, model),
     { onSuccess: refetchChores }
   );
 
   const activateChore = useMutation<string>(
-    (id: string) => {
-      return axios.post(`${url.chores}/${id}/activate`);
-    },
+    (id: string) => axios.post(`${url.chores}/${id}/activate`),
+    { onSuccess: refetchChores }
+  );
+
+  const restartChore = useMutation<string>(
+    (id: string) => axios.post(`${url.chores}/${id}/restart`),
     { onSuccess: refetchChores }
   );
 
@@ -100,6 +100,8 @@ const App: FC = () => {
   };
 
   const handleActivateChore = (id: string) => activateChore.mutate(id);
+
+  const handleRestartChore = (id: string) => restartChore.mutate(id);
 
   const choreModal = (
     <Modal
@@ -151,6 +153,7 @@ const App: FC = () => {
             chores={chores.filter((ch) => ch.categoryId === c.id)}
             onSelectChore={selectChore}
             onActivateChore={handleActivateChore}
+            onRestartChore={handleRestartChore}
           />
         ))}
       </div>

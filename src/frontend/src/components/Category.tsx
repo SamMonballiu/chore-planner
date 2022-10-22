@@ -14,6 +14,7 @@ interface Props {
   onToggleCollapsed: (id: string) => void;
   onSelectChore: (id: string) => void;
   onActivateChore: (id: string) => void;
+  onRestartChore: (id: string) => void;
 }
 
 const CategoryComponent: FC<Props> = ({
@@ -23,6 +24,7 @@ const CategoryComponent: FC<Props> = ({
   onToggleCollapsed,
   onSelectChore,
   onActivateChore,
+  onRestartChore,
 }) => {
   const { inactive, active } = useMemo(() => {
     const isActive = (chore: Chore) => chore.lastActiveDate !== undefined;
@@ -62,7 +64,12 @@ const CategoryComponent: FC<Props> = ({
           </div>
           <div className="active chores">
             {active.map((c) => (
-              <ChoreComponent key={c.id} chore={c} onSelect={onSelectChore} />
+              <ChoreComponent
+                key={c.id}
+                chore={c}
+                onSelect={onSelectChore}
+                onRestart={onRestartChore}
+              />
             ))}
           </div>
         </div>
