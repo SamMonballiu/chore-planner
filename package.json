@@ -9,8 +9,7 @@
     "prestart": "npm run build",
     "build": "tsc",
     "prebuild": "rimraf build",
-    "lint": "eslint src/**/*.ts",
-    "prepare": "husky install"
+    "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
     "cors": "2.8.5",
@@ -27,7 +26,6 @@
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.0",
-    "husky": "7.0.1",
     "lint-staged": "11.1.2",
     "nodemon": "2.0.12",
     "prettier": "2.3.2",
