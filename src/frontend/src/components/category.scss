@@ -1,30 +1,51 @@
 .category {
-    .header {
-        display: flex;
-        align-items: center;
+  .header {
+    display: flex;
+    align-items: center;
 
-        .collapse-icon {
-            font-size: 2.2em;
-            opacity: .25;
-            cursor: pointer;
-            transition: transform .2s;
-        }
-
-        .rotated {
-            transform: rotate(90deg);
-            transition: transform .2s;
-        }
-
-        h5 {
-            cursor: pointer;
-        }
-        font-family: 'Roboto';
+    .collapse-icon {
+      font-size: 2.2em;
+      opacity: 0.25;
+      cursor: pointer;
+      transition: transform 0.2s;
     }
 
-    .chores {
-        display: flex;
-        gap: 8px;
+    .rotated {
+      transform: rotate(90deg);
+      transition: transform 0.2s;
     }
 
-    margin-bottom: 1em;
+    h5 {
+      cursor: pointer;
+    }
+  }
+
+  .overview {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 20px;
+
+    .active {
+      flex-grow: 1;
+      flex-wrap: wrap;
+      flex-basis: 0px;
+      background: rgba(255, 255, 255, 0.25);
+      padding: 12px;
+    }
+
+    .inactive {
+      flex-grow: 1;
+      flex-wrap: wrap;
+      flex-basis: 0px;
+      background: rgba(255, 255, 255, 0.25);
+      padding: 12px;
+    }
+  }
+
+  .chores {
+    display: flex;
+    gap: 8px;
+  }
+
+  margin-bottom: 1em;
 }

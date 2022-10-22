@@ -19,9 +19,9 @@ const url = {
 };
 
 const App: FC = () => {
-  const [collapsedCategories, setCollapsedCategories] = useState<string[]>([]);
   const [showChoreModal, setShowChoreModal] = useState<boolean>(false);
   const [selectedChore, selectChore, deselectChore] = useSelection<string>();
+  const [collapsedCategories, setCollapsedCategories] = useState<string[]>([]);
 
   useEffect(() => {
     setShowChoreModal(selectedChore !== undefined);
@@ -41,6 +41,7 @@ const App: FC = () => {
       return (await axios.get<Category[]>(url.categories)).data;
     }
   );
+
   const {
     data: chores,
     isFetching: isFetchingChores,
@@ -52,16 +53,38 @@ const App: FC = () => {
     },
     {
       enabled: !!categories,
+      onSuccess: (data) => setCollapsedCategories(getInitialCollapsed(data)),
     }
   );
 
-  const createChore = useMutation((chore: ChorePostmodel) => {
-    return axios.post(url.chores, chore);
-  });
+  const getInitialCollapsed = (chores: Chore[]): string[] => {
+    if (!categories) {
+      return [];
+    }
 
+    return categories
+      .map((cat) => cat.id)
+      .filter((cat) => chores?.every((c) => c.categoryId !== cat));
+  };
+
+  const createChore = useMutation(
+    (chore: ChorePostmodel) => {
+      return axios.post(url.chores, chore);
+    },
+    {
+      onSuccess: refetchChores,
+    }
+  );
   const updateChore = useMutation<string>(
     (model: ChorePostmodel) => {
       return axios.put(`${url.chores}/${selectedChore}`, model);
+    },
+    { onSuccess: refetchChores }
+  );
+
+  const activateChore = useMutation<string>(
+    (id: string) => {
+      return axios.post(`${url.chores}/${id}/activate`);
     },
     { onSuccess: refetchChores }
   );
@@ -72,8 +95,11 @@ const App: FC = () => {
       deselectChore();
     } else {
       createChore.mutate(data);
+      setShowChoreModal(false);
     }
   };
+
+  const handleActivateChore = (id: string) => activateChore.mutate(id);
 
   const choreModal = (
     <Modal
@@ -96,6 +122,17 @@ const App: FC = () => {
     </Modal>
   );
 
+  const addButton = (
+    <Fab
+      size="medium"
+      color="primary"
+      className="addChore"
+      onClick={() => setShowChoreModal(true)}
+    >
+      <AddIcon />
+    </Fab>
+  );
+
   if (isFetchingCategories || isFetchingChores) {
     return null;
   }
@@ -104,14 +141,7 @@ const App: FC = () => {
     <>
       {choreModal}
       <div className="App">
-        <Fab
-          size="medium"
-          color="primary"
-          className="addChore"
-          onClick={() => setShowChoreModal(true)}
-        >
-          <AddIcon />
-        </Fab>
+        {addButton}
         {categories?.map((c) => (
           <CategoryComponent
             key={c.id}
@@ -120,6 +150,7 @@ const App: FC = () => {
             onToggleCollapsed={toggleCollapsed}
             chores={chores.filter((ch) => ch.categoryId === c.id)}
             onSelectChore={selectChore}
+            onActivateChore={handleActivateChore}
           />
         ))}
       </div>

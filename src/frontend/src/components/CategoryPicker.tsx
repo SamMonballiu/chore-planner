@@ -11,7 +11,7 @@ interface Props {
   defaultValue?: string;
 }
 
-const CategoryPicker: FC<Props> = ({ onSelect, defaultValue }) => {
+const CategoryPicker: FC<Props> = ({ onSelect, defaultValue = "" }) => {
   const baseUrl = import.meta.env.VITE_URL as string;
   const { t } = useTranslation();
 

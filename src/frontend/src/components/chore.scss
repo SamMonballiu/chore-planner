@@ -1,9 +1,39 @@
 .chore-card {
     max-width: 10em;
-    cursor: pointer;
-    
     p {
         font-size: .9em !important;
         user-select: none;
+        cursor: pointer;
     }
+
+    .inactive {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .active {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .actions {
+        .mirror {
+            transform: scaleX(-1);
+        }
+    
+        .icon {
+            cursor: pointer;
+            opacity: .25;
+    
+            &:hover {
+                opacity: 1;
+            }
+        }
+    
+        .prg {
+            width: 80px;
+        }
+    }
+
 }
