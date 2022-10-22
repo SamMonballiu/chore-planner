@@ -1,9 +1,11 @@
 .chore-card {
     max-width: 20em;
+    min-width: 8em;
     p {
         font-size: .9em !important;
         user-select: none;
         cursor: pointer;
+        font-family: "Work Sans", sans-serif;
     }
 
     .inactive {
@@ -25,6 +27,7 @@
         .icon {
             cursor: pointer;
             opacity: .25;
+            color: #11998e !important;
     
             &:hover {
                 opacity: 1;

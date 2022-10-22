@@ -159,7 +159,7 @@ const App: FC = () => {
             }
             onSave={handleSaveChore}
             onDelete={
-              selectedChore ? toggleConfirmDeleteSelectedChoreModal : null
+              selectedChore ? toggleConfirmDeleteSelectedChoreModal : undefined
             }
           />
         ),
@@ -186,7 +186,7 @@ const App: FC = () => {
   const confirmDeleteSelectedChoreModal = selectedChore ? (
     <ConfirmModal
       show={showConfirmDeleteSelectedChoreModal}
-      width="md"
+      width="sm"
       message={t.askDelete(chores?.find((c) => c.id === selectedChore).name)}
       onCancel={toggleConfirmDeleteSelectedChoreModal}
       onConfirm={() => handleDeleteChore(selectedChore)}
