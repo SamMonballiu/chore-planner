@@ -22,13 +22,13 @@ const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
     chore?.categoryId
   );
   const [repeatInterval, setRepeatInterval] = useState<number>(
-    chore?.repeatInterval ?? 0
+    chore?.repeatInterval ?? 1
   );
 
   const isEdit = chore !== undefined;
   const title = isEdit ? t.editChore : t.newChore;
 
-  const marks = [0, 7, 14, 30, 60, 90].map((n) => ({
+  const marks = [1, 7, 14, 30, 60, 90].map((n) => ({
     value: n,
     label: n.toFixed(0),
   }));
@@ -62,8 +62,10 @@ const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
         <Typography variant="body2">Interval</Typography>
         <Slider
           size="small"
-          defaultValue={repeatInterval ?? 0}
+          defaultValue={repeatInterval}
+          value={repeatInterval}
           valueLabelDisplay="on"
+          min={1}
           max={90}
           marks={marks}
           onChange={(e) => setRepeatInterval(parseInt(e.target.value))}
