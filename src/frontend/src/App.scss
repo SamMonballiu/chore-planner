@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400&display=swap');
 
 body {
   height: 100%;
@@ -15,6 +15,10 @@ body {
 }
 
 .App {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1em 2em;
+  border-radius: 12px;
+
   .addChore {
     position: absolute;
     top: 1em;
