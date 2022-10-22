@@ -1,0 +1,25 @@
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 12px;
+  row-gap: 8px;
+
+  .item {
+    font-family: 'Work Sans';
+    background: #ddd;
+    color: white;
+    padding: 8px 24px;
+    border-radius: 12px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: background .2s;
+  }
+
+  .active {
+    background: #11998e;
+    background: -webkit-linear-gradient(to right, #31bdb1, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #31bdb1, #11998e);
+    font-weight: 400;
+    transition: background .2s;
+  }
+}
