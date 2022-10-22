@@ -13,22 +13,23 @@ interface Props {
   chore?: Chore;
   onSave?: (data: ChorePostmodel) => void;
   onCancel: () => void;
+  onDelete?: () => void;
 }
 
-const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
+const ModifyChore: FC<Props> = ({ chore, onSave, onCancel, onDelete }) => {
   const { t } = useTranslation();
   const [name, setName] = useState<string>(chore?.name ?? "");
   const [category, setCategory] = useState<string | undefined>(
     chore?.categoryId
   );
   const [repeatInterval, setRepeatInterval] = useState<number>(
-    chore?.repeatInterval ?? 0
+    chore?.repeatInterval ?? 1
   );
 
   const isEdit = chore !== undefined;
   const title = isEdit ? t.editChore : t.newChore;
 
-  const marks = [0, 7, 14, 30, 60, 90].map((n) => ({
+  const marks = [1, 7, 14, 30, 60, 90].map((n) => ({
     value: n,
     label: n.toFixed(0),
   }));
@@ -62,8 +63,10 @@ const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
         <Typography variant="body2">Interval</Typography>
         <Slider
           size="small"
-          defaultValue={repeatInterval ?? 0}
+          defaultValue={repeatInterval}
+          value={repeatInterval}
           valueLabelDisplay="on"
+          min={1}
           max={90}
           marks={marks}
           onChange={(e) => setRepeatInterval(parseInt(e.target.value))}
@@ -73,6 +76,11 @@ const ModifyChore: FC<Props> = ({ chore, onSave, onCancel }) => {
         <Button variant="outlined" onClick={onCancel}>
           {t.cancel}
         </Button>
+        {onDelete ? (
+          <Button variant="contained" color="error" onClick={onDelete}>
+            {t.delete}
+          </Button>
+        ) : null}
         <Button variant="contained" onClick={handleSave}>
           {t.save}
         </Button>

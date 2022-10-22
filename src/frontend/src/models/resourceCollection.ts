@@ -5,6 +5,9 @@ export interface Resource {
   category: string;
   cancel: string;
   save: string;
+  askRestartExpiredChores: string;
+  askDelete: (name: string) => string;
+  delete: string;
 }
 
 export interface ResourceCollection {
@@ -19,5 +22,8 @@ export const translations: ResourceCollection = {
     category: "Category",
     cancel: "Cancel",
     save: "Save",
+    askRestartExpiredChores: "Restart expired chores?",
+    askDelete: (name) => `Delete '${name}?'`,
+    delete: "Delete"
   },
 };

@@ -1,21 +1,63 @@
 import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import React, { FC } from "react";
-import { Chore } from "../../../common/models";
+import React, { FC, useMemo } from "react";
+import { Chore, getIntervalProgressPercentage } from "../../../common/models";
 import "./chore.scss";
+import ForwardIcon from "@mui/icons-material/Forward";
+import cx from "classnames";
+import LinearProgress from "@mui/material/LinearProgress";
 
 interface Props {
   chore: Chore;
   onSelect: (id: string) => void;
+  onActivate?: (id: string) => void;
+  onRestart?: (id: string) => void;
 }
 
-const ChoreComponent: FC<Props> = ({ chore, onSelect }) => {
+const ChoreComponent: FC<Props> = ({
+  chore,
+  onSelect,
+  onActivate,
+  onRestart,
+}) => {
+  const isActive = chore.lastActiveDate !== undefined;
+
+  const intervalProgress = useMemo(
+    (): number | undefined => getIntervalProgressPercentage(chore),
+    []
+  );
+
   return (
-    <Card className="chore-card" onClick={() => onSelect(chore.id)}>
-      <CardContent>
+    <Card className="chore-card">
+      <CardContent onClick={() => onSelect(chore.id)}>
         <Typography variant="body1">{chore.name}</Typography>
       </CardContent>
+      <CardActions
+        className={cx("actions", { active: isActive, inactive: !isActive })}
+      >
+        {isActive ? (
+          <>
+            <ForwardIcon
+              className="mirror icon"
+              onClick={() => onRestart?.(chore.id)}
+            />
+            {intervalProgress ? (
+              <LinearProgress
+                variant="determinate"
+                className="prg"
+                value={intervalProgress}
+              />
+            ) : null}
+          </>
+        ) : (
+          <ForwardIcon
+            className="icon"
+            onClick={() => onActivate?.(chore.id)}
+          />
+        )}
+      </CardActions>
     </Card>
   );
 };
