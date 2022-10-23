@@ -8,6 +8,9 @@ import React, { FC, useState } from "react";
 import CategoryPicker from "./CategoryPicker";
 import "./ModifyChore.scss";
 import { ChorePostmodel } from "@shared/postmodels/chore";
+import SubjectIcon from "@mui/icons-material/Subject";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 interface Props {
   chore?: Chore;
@@ -48,29 +51,36 @@ const ModifyChore: FC<Props> = ({ chore, onSave, onCancel, onDelete }) => {
   return (
     <div className="modifyChore">
       <Typography variant="h4">{title}</Typography>
-      <TextField
-        fullWidth
-        label={t.name}
-        variant="standard"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <CategoryPicker
-        onSelect={(id) => setCategory(id)}
-        defaultValue={category}
-      />
-      <div className="repeatInterval">
-        <Typography variant="body2">Interval</Typography>
-        <Slider
-          size="small"
-          defaultValue={repeatInterval}
-          value={repeatInterval}
-          valueLabelDisplay="on"
-          min={1}
-          max={90}
-          marks={marks}
-          onChange={(e) => setRepeatInterval(parseInt(e.target.value))}
-        />
+      <div className="fields">
+        <div className="field">
+          <SubjectIcon className="icon" />
+          <TextField
+            fullWidth
+            variant="standard"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <LocalOfferIcon className="icon" />
+          <CategoryPicker
+            onSelect={(id) => setCategory(id)}
+            defaultValue={category}
+          />
+        </div>
+        <div className="field">
+          <HourglassEmptyIcon className="icon" />
+          <Slider
+            size="small"
+            defaultValue={repeatInterval}
+            value={repeatInterval}
+            valueLabelDisplay="on"
+            min={1}
+            max={90}
+            marks={marks}
+            onChange={(e) => setRepeatInterval(parseInt(e.target.value))}
+          />
+        </div>
       </div>
       <div className="buttonRow">
         <Button variant="outlined" onClick={onCancel}>
