@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "deploy": "vite build --outDir ../backend/public",
+    "preview": "vite preview",
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",

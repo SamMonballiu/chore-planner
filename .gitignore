@@ -9,4 +9,6 @@ build/
 *.tsbuildinfo
 
 src/backend/data.json
+src/backend/public
 src/frontend/.env
+src/frontend/dist
