@@ -1,42 +1,40 @@
 .chore-card {
-    max-width: 20em;
-    min-width: 8em;
-    p {
-        font-size: .9em !important;
-        user-select: none;
-        cursor: pointer;
-        font-family: "Work Sans", sans-serif;
+  max-width: 20em;
+  min-width: 8em;
+  max-height: 6.5em;
+
+  p {
+    font-size: 0.9em !important;
+    user-select: none;
+    cursor: pointer;
+    font-family: "Work Sans", sans-serif;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+
+    .mirror {
+      transform: scaleX(-1);
     }
 
-    .inactive {
-        display: flex;
-        justify-content: flex-end;
+    .icon {
+      cursor: pointer;
+      opacity: 0.25;
+      color: #11998e !important;
+
+      &:hover {
+        opacity: 1;
+      }
     }
 
-    .active {
-        display: flex;
-        justify-content: space-between;
-
+    .prg {
+      width: 70%;
     }
 
-    .actions {
-        .mirror {
-            transform: scaleX(-1);
-        }
-    
-        .icon {
-            cursor: pointer;
-            opacity: .25;
-            color: #11998e !important;
-    
-            &:hover {
-                opacity: 1;
-            }
-        }
-    
-        .prg {
-            width: 80px;
-        }
+    .repeatInterval {
+      opacity: 0.25;
+      cursor: default;
     }
-
+  }
 }

@@ -14,12 +14,12 @@ import AddIcon from "@mui/icons-material/Add";
 import ConfirmModal from "./components/ConfirmModal";
 import { useTranslation } from "./hooks/useTranslation";
 import { useToggle } from "./hooks/useToggle";
+import { Settings } from "./models/settings";
 
-const baseUrl = import.meta.env.VITE_URL as string;
 
 const url = {
-  chores: `${baseUrl}/api/chores`,
-  categories: `${baseUrl}/api/categories`,
+  chores: `${Settings.baseUrl}/api/chores`,
+  categories: `${Settings.baseUrl}/api/categories`,
 };
 
 const App: FC = () => {

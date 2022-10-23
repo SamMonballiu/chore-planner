@@ -11,5 +11,21 @@
 
   h4 {
     font-family: "Nunito";
+    user-select: none;
+  }
+
+  .fields {
+    row-gap: 1em;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .field {
+    display: flex;
+
+    .icon {
+      margin-right: 1em;
+      color: #11998e;
+    }
   }
 }

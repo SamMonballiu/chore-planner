@@ -8,6 +8,7 @@ import "./chore.scss";
 import ForwardIcon from "@mui/icons-material/Forward";
 import cx from "classnames";
 import LinearProgress from "@mui/material/LinearProgress";
+import { Settings } from "@/models/settings";
 
 interface Props {
   chore: Chore;
@@ -23,6 +24,8 @@ const ChoreComponent: FC<Props> = ({
   onRestart,
 }) => {
   const isActive = chore.lastActiveDate !== undefined;
+  const showInterval = Settings.showRepeatIntervalOnInactiveChores;
+  console.log(showInterval);
 
   const intervalProgress = useMemo(
     (): number | undefined => getIntervalProgressPercentage(chore),
@@ -52,10 +55,15 @@ const ChoreComponent: FC<Props> = ({
             ) : null}
           </>
         ) : (
-          <ForwardIcon
-            className="icon"
-            onClick={() => onActivate?.(chore.id)}
-          />
+          <>
+            <Typography variant="body2" className="repeatInterval">
+              {showInterval ? chore.repeatInterval : null }
+            </Typography>
+            <ForwardIcon
+              className="icon"
+              onClick={() => onActivate?.(chore.id)}
+            />
+          </>
         )}
       </CardActions>
     </Card>
