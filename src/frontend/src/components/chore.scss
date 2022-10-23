@@ -1,7 +1,13 @@
 .chore-card {
   max-width: 20em;
   min-width: 8em;
-  max-height: 6.5em;
+  max-height: 7em;
+
+  .date {
+    opacity: .5;
+    font-size: .7em !important;
+    cursor: default;
+  }
 
   p {
     font-size: 0.9em !important;

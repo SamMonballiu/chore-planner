@@ -3,7 +3,11 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import React, { FC, useMemo } from "react";
-import { Chore, getIntervalProgressPercentage } from "../../../common/models";
+import {
+  Chore,
+  formatDate,
+  getIntervalProgressPercentage,
+} from "../../../common/models";
 import "./chore.scss";
 import ForwardIcon from "@mui/icons-material/Forward";
 import cx from "classnames";
@@ -25,7 +29,6 @@ const ChoreComponent: FC<Props> = ({
 }) => {
   const isActive = chore.lastActiveDate !== undefined;
   const showInterval = Settings.showRepeatIntervalOnInactiveChores;
-  console.log(showInterval);
 
   const intervalProgress = useMemo(
     (): number | undefined => getIntervalProgressPercentage(chore),
@@ -36,6 +39,11 @@ const ChoreComponent: FC<Props> = ({
     <Card className="chore-card">
       <CardContent onClick={() => onSelect(chore.id)}>
         <Typography variant="body1">{chore.name}</Typography>
+        {isActive ? (
+          <Typography className="date">
+            {formatDate(chore.lastActiveDate)}
+          </Typography>
+        ) : null}
       </CardContent>
       <CardActions
         className={cx("actions", { active: isActive, inactive: !isActive })}
@@ -57,7 +65,7 @@ const ChoreComponent: FC<Props> = ({
         ) : (
           <>
             <Typography variant="body2" className="repeatInterval">
-              {showInterval ? chore.repeatInterval : null }
+              {showInterval ? chore.repeatInterval : null}
             </Typography>
             <ForwardIcon
               className="icon"
