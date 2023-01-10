@@ -73,8 +73,14 @@ const App: FC = () => {
       progress: getIntervalProgressPercentage(ch),
     }));
 
-    return progressPercentages?.filter((p) => p.progress === 100);
+    return progressPercentages?.filter((p) => p.progress === 100) ?? [];
   }, [chores]);
+
+  useEffect(() => {
+    if (expiredChores.length > 0) {
+      handleRestartChores(expiredChores?.map(c => c.id));
+    }
+  }, [expiredChores]);
 
   const getInitialCollapsed = (chores: Chore[]): string[] => {
     if (!categories) {
