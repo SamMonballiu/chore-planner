@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "deploy": "vite build --outDir ../backend/public",
-    "preview": "vite preview",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",

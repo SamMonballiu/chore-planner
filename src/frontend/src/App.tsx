@@ -1,4 +1,3 @@
-import Fab from "@mui/material/Fab";
 import { Category, Chore } from "@shared/models";
 import { getIntervalProgressPercentage } from "../../common/models";
 import { ChorePostmodel } from "@shared/postmodels/chore";
@@ -10,12 +9,11 @@ import CategoryComponent from "./components/Category";
 import Modal from "./components/Modal";
 import ModifyChore from "./components/ModifyChore";
 import { useSelection } from "./hooks/useSelection";
-import AddIcon from "@mui/icons-material/Add";
 import ConfirmModal from "./components/ConfirmModal";
 import { useTranslation } from "./hooks/useTranslation";
 import { useToggle } from "./hooks/useToggle";
 import { Settings } from "./models/settings";
-
+import ActionButtons from "./components/ActionButtons";
 
 const url = {
   chores: `${Settings.baseUrl}/api/chores`,
@@ -76,12 +74,6 @@ const App: FC = () => {
     }));
 
     return progressPercentages?.filter((p) => p.progress === 100);
-  }, [chores]);
-
-  useEffect(() => {
-    if (expiredChores?.length > 0) {
-      toggleConfirmRestartExpiredModal();
-    }
   }, [chores]);
 
   const getInitialCollapsed = (chores: Chore[]): string[] => {
@@ -193,17 +185,6 @@ const App: FC = () => {
     />
   ) : null;
 
-  const addButton = (
-    <Fab
-      size="medium"
-      color="primary"
-      className="addChore"
-      onClick={() => setShowChoreModal(true)}
-    >
-      <AddIcon />
-    </Fab>
-  );
-
   if (isFetchingCategories || isFetchingChores) {
     return null;
   }
@@ -214,7 +195,10 @@ const App: FC = () => {
       {confirmRestartExpiredModal}
       {confirmDeleteSelectedChoreModal}
       <div className="App">
-        {addButton}
+        <ActionButtons
+          onAdd={() => setShowChoreModal(true)}
+          onRestartExpired={toggleConfirmRestartExpiredModal}
+        />
         {categories?.map((c) => (
           <CategoryComponent
             key={c.id}
