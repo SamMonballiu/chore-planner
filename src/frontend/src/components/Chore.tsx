@@ -57,6 +57,7 @@ const ChoreComponent: FC<Props> = ({
             {intervalProgress ? (
               <LinearProgress
                 variant="determinate"
+                color={intervalProgress < 100 ? "primary" : "warning"}
                 className="prg"
                 value={intervalProgress}
               />
